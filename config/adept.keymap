@@ -37,6 +37,14 @@
             require-prior-idle-ms = <100>;
             bindings = <&kp>, <&kp>;
         };
+
+        // tap = right click, 2nd tap within term = toggle scroll layer
+        tbl_rclk: tbl_rclk {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <250>;
+            bindings = <&mkp RCLK>, <&tog 1>;
+        };
     };
 
     combos {
@@ -49,38 +57,38 @@
             layers = <0 1>;
         };
 
-        combo_scroll_layer {
-            timeout-ms = <70>;
-            key-positions = <2 3>;
-            bindings = <&to 1>;
-            layers = <0>;
-        };
-
-        combo_esc {
-            timeout-ms = <70>;
+        combo_close_window {
+            timeout-ms = <75>;
             key-positions = <0 1>;
-            bindings = <&kp ESC>;
+            bindings = <&kp LA(F4)>;
             layers = <0 1>;
         };
 
-        combo_close_tab {
-            timeout-ms = <70>;
+        combo_bootloader {
+            timeout-ms = <150>;
             key-positions = <1 2>;
+            bindings = <&bootloader>;
+            layers = <0>;
+        };
+
+        combo_close_tab {
+            timeout-ms = <75>;
+            key-positions = <2 3>;
             bindings = <&kp LC(W)>;
             layers = <0 1>;
         };
 
-        combo_switch_app {
-            timeout-ms = <70>;
-            key-positions = <0 4>;
-            bindings = <&kp LA(TAB)>;
+        combo_scroll_tog {
+            timeout-ms = <75>;
+            key-positions = <3 4>;
+            bindings = <&tog 1>;
             layers = <0 1>;
         };
 
-        combo_close_app {
-            timeout-ms = <70>;
-            key-positions = <0 3>;
-            bindings = <&kp LA(F4)>;
+        combo_enter {
+            timeout-ms = <75>;
+            key-positions = <3 5>;
+            bindings = <&kp ENTER>;
             layers = <0 1>;
         };
 
@@ -90,26 +98,19 @@
             bindings = <&bt BT_CLR>;
             layers = <0>;
         };
-
-        combo_bootloader {
-            timeout-ms = <150>;
-            key-positions = <0 3 4 5>;
-            bindings = <&bootloader>;
-            layers = <0>;
-        };
     };
 
     keymap {
         compatible = "zmk,keymap";
         mouse_layer {
             bindings = <
-        //╭────────────────┬──────────┬─────────┬──────────────────────────────╮
-        //│  Left Tab      │ Previous │ Next    │ scroll_layer/Right Tab       │
-            &kp LC(PAGE_UP)  &mkp MB4   &mkp MB5  &lt 1 LC(PAGE_DOWN)     
-        //├────────────────┼──────────┼─────────┼──────────────────────────────┤
-        //│  Left Click    │          │         │ Right Click                  │
-              &mkp MB1                            &mkp MB2     
-        //╰────────────────┴──────────┴─────────┴──────────────────────────────╯
+        //╭───────────┬───────────┬─────────────┬─────────────────────────╮
+        //│  Copy     │  Paste    │  Alt+Right  │  scroll(hold)/Alt+Left  │
+            &kp LC(C)   &kp LC(V)   &kp LA(RIGHT) &lt 1 LA(LEFT)
+        //├───────────┼───────────┴─────────────┴─────────────────────────┤
+        //│ Left Click│           Right Click / 2nd tap: toggle scroll    │
+              &mkp LCLK                                  &tbl_rclk
+        //╰───────────┴────────────────────────────────────────────────╯
             >;
         };
 
